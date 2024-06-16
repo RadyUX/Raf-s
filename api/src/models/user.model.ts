@@ -1,10 +1,10 @@
-import { RowDataPacket } from "mysql2"
 
 
-export default interface User extends RowDataPacket {
+
+export default interface User {
 id?: number,
-name?: string,
-email?: string,
-password?: string,
+name: string,
+email: string,
+password: string,
 avatar?: string,
 }
