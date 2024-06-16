@@ -15,6 +15,7 @@ class AuthService {
           }
   
           return response.data;
+        
         });
     }
 
@@ -28,6 +29,7 @@ class AuthService {
   
     logout() {
       localStorage.removeItem("user");
+         return axios.post("http://localhost:8000/logout")
     }
 
     getCurrentUser(){

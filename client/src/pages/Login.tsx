@@ -1,49 +1,47 @@
 
 import { Formik, Form, Field, ErrorMessage, FormikValues } from 'formik';
 import * as Yup from 'yup';
-import React, { useState } from "react";
-import authService from '../service/authService';
-import { useNavigate } from 'react-router-dom';
+import { useContext, useState } from "react";
 
+import {  useNavigate } from 'react-router-dom';
 
+import { AuthContext } from '../context/auth';
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
-
-
+  
+  const authContext = useContext(AuthContext);
+  const { login } = authContext;
   
 const validationSchema = Yup.object().shape({
-  email: Yup.string().required('Username is required'),
+  email: Yup.string().required('Email is required'),
   password: Yup.string().required('Password is required'),
 });
 
 
 const navigate = useNavigate();
 
-const handleLogin = (formValue: FormikValues) => {
+
+const handleLogin = async (formValue: FormikValues) => {
   const { email, password } = formValue;
   setMessage("");
   setLoading(true);
 
-  authService.login(email, password).then(
-    () =>{
-      navigate("/");
-    },(error) => {
-      const resMessage =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
+  try {
+    await login(email, password);
+    navigate("/");
+  } catch (error: any) {
+    const resMessage =
+      (error.response &&
+        error.response.data &&
+        error.response.data.message) ||
+      error.message ||
+      error.toString();
 
-      setLoading(false);
-      setMessage(resMessage);
-    }
-  )
-
-
-  console.log('Email:', email, 'Password:', password);
+    setLoading(false);
+    setMessage(resMessage);
+  }
 };
 
 
