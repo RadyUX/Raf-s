@@ -1,4 +1,4 @@
-import { QueryError, ResultSetHeader} from "mysql2";
+import {  ResultSetHeader} from "mysql2";
 import db from "../db";
 import { RowDataPacket } from 'mysql2';
 import User from "../models/user.model";

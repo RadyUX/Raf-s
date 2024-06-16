@@ -6,6 +6,7 @@ import User from "./models/user.model";
 import UserController from "./controllers/user.controller";
 import authrouter from "./routes/auth.route";
 import userrouter from "./routes/user.route";
+import postrouter from "./routes/post.route";
 import cors from "cors"
 const app: Express = express()
 const PORT = 8000;
@@ -22,6 +23,7 @@ const userRepo = new UserRepository();
 app.use(cors())
 app.use('/', authrouter);
 app.use('/', userrouter)
+app.use('/', postrouter)
 
 /*async function exampleUsage() {
   try {

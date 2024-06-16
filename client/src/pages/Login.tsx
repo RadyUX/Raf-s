@@ -31,7 +31,7 @@ const handleLogin = async (formValue: FormikValues) => {
   try {
     await login(email, password);
     navigate("/");
-  } catch (error: any) {
+  } catch (error: any ) {
     const resMessage =
       (error.response &&
         error.response.data &&
@@ -70,10 +70,15 @@ const handleLogin = async (formValue: FormikValues) => {
         </div>
 
         <div>
-          <button type="submit">
-            Login
+          <button type="submit" disabled={loading}>
+          {loading ? "Loading..." : "Login"}
           </button>
         </div>
+        {message && (
+            <div>
+              <div>{message}</div>
+            </div>
+          )}
       </Form>
     </Formik>
   );
