@@ -1,7 +1,7 @@
 
 import PostRepository from "../repository/post.repository"
 import { Request, Response } from 'express';
-
+import Post from "../models/post.model";
 class PostController{
     private PostRepository:  PostRepository
 
@@ -10,6 +10,7 @@ class PostController{
 
     this.findById = this.findById.bind(this)
     this.findAll = this.findAll.bind(this)
+    this.create = this.create.bind(this)
     }
 
 
@@ -34,6 +35,28 @@ class PostController{
         
         }catch(err: any){
             res.status(500).json({ message: err.message });
+        }
+    }
+
+    create = async (req: Request, res: Response): Promise<void> =>{
+        
+        
+        try{
+            
+            const post: Post = {
+                title: req.body.title,
+                content: req.body.content,
+                category: req.body.category,
+                image: req.body.image,
+                created_at: new Date().toISOString(), // Assurez-vous que la date est bien formatée
+                updated_at: new Date().toISOString(), // Ajoutez updated_at si nécessaire
+                admin_id: req.body.admin_id, // Assurez-vous que admin_id est fourni
+                like_count: 0 // Initialiser like_count à 0 ou à une valeur par défaut
+            };
+            const newPost = await this.PostRepository.create(post)
+            res.status(201).json(newPost);
+        }catch (error: any) {
+            res.status(500).json({ message: error.message });
         }
     }
 }

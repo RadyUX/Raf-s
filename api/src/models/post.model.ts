@@ -5,6 +5,7 @@ export default interface Post  {
     title: string;
     content: string;
     category: string;
+    image?: string;
     created_at: string;
     updated_at: string; 
     admin_id: number;

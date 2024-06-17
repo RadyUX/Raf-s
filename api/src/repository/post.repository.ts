@@ -2,14 +2,20 @@
 import Post from "../models/post.model";
 import db from "../db";
 import { resolve } from "path";
-import { RowDataPacket } from "mysql2";
+import { ResultSetHeader, RowDataPacket } from "mysql2";
 import { rejects } from "assert";
 
 interface IPostRepository {
     findById(id: string): Promise<Post | null>;
     findAll(category: string): Promise<Post[]>
+    create(post: Post): Promise<Post>
 }
 
+
+//fonction pour un format de date accepter par mySQL
+function formatDateToMySQL(date: Date): string {
+    return date.toISOString().slice(0, 19).replace('T', ' ');
+}
 
 class PostRepository implements IPostRepository {
 
@@ -65,6 +71,25 @@ class PostRepository implements IPostRepository {
                 }));
 
                 resolve(posts);
+            });
+        });
+    }
+
+    async create(post: Post): Promise<Post> {
+        return new Promise((resolve, reject) => {
+            const sql = "INSERT INTO posts (`title`, `content`, `category`,`image`, `created_at`, `updated_at`, `admin_id`,`like_count` ) VALUES (?,?,?, ?, ?, ?, ?,?)";
+            const values = [post.title, post.content, post.category,post.image,  formatDateToMySQL(new Date(post.created_at)), formatDateToMySQL(new Date(post.updated_at)), post.admin_id, post.like_count];
+
+            db.query<ResultSetHeader>(sql, values, (err, result) => {
+                if (err) {
+                    return reject(err);
+                }
+
+                const newPost: Post = {
+                    ...post,
+                    id: result.insertId
+                };
+                resolve(newPost);
             });
         });
     }

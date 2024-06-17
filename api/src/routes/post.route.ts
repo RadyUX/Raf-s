@@ -7,4 +7,5 @@ const postController = new PostController()
 
 postrouter.get('/post/:id', postController.findById);
 postrouter.get('/posts', postController.findAll)
+postrouter.post('/posts/create', postController.create)
 export default  postrouter ;
