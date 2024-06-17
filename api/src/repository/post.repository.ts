@@ -3,10 +3,11 @@ import Post from "../models/post.model";
 import db from "../db";
 import { resolve } from "path";
 import { RowDataPacket } from "mysql2";
+import { rejects } from "assert";
 
 interface IPostRepository {
     findById(id: string): Promise<Post | null>;
-   
+    findAll(category: string): Promise<Post[]>
 }
 
 
@@ -37,6 +38,33 @@ class PostRepository implements IPostRepository {
                     console.log("Post not found:", data);
                     resolve(null);
                 }
+            });
+        });
+    }
+
+
+    async findAll(category?: string): Promise<Post[]> {
+        return new Promise((resolve, reject) => {
+            const sql = category ? "SELECT * FROM posts WHERE category = ?" : "SELECT * FROM posts"
+            const queryValues = category ? [category] : [];
+            db.query<RowDataPacket[]>(sql, queryValues ,(err: URIError | null, data: RowDataPacket[]) => {
+                if (err) {
+                    return reject(err);
+                }
+                
+                // Map the result set to Post array
+                const posts: Post[] = data.map(row => ({
+                    id: row.id as number,
+                    title: row.title as string,
+                    content: row.content as string,
+                    category: row.category as string,
+                    created_at: row.created_at as string,
+                    updated_at: row.updated_at as string,
+                    admin_id: row.admin_id as number,
+                    like_count: row.like_count as number
+                }));
+
+                resolve(posts);
             });
         });
     }

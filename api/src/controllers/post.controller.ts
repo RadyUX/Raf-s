@@ -9,6 +9,7 @@ class PostController{
       this.PostRepository =  new PostRepository();
 
     this.findById = this.findById.bind(this)
+    this.findAll = this.findAll.bind(this)
     }
 
 
@@ -23,6 +24,17 @@ class PostController{
             }
 
 
+    }
+
+    findAll =  async (req: Request, res: Response): Promise<void> => {
+        try{
+            const category = req.query.category as string
+            const posts = await this.PostRepository.findAll(category)
+            res.status(200).json(posts);
+        
+        }catch(err: any){
+            res.status(500).json({ message: err.message });
+        }
     }
 }
 
