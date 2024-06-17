@@ -7,7 +7,7 @@ import Register from "./pages/Register";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
-
+import "./index.css"
 const Layout = () => {
   return (
     <>
