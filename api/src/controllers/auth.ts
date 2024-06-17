@@ -14,21 +14,23 @@ class AuthController {
         const { email, password } = req.body;
 
         try {
-            const user: User | Admin = await this.authRepository.login(email, password);
-            const token = jwt.sign({ id: user.id }, 'jwtkey', { expiresIn: '1h' });
+            const { account, isAdmin } = await this.authRepository.login(email, password);
+            const token = jwt.sign({ id: account.id, isAdmin }, 'jwtkey', { expiresIn: '1h' });
 
             res.cookie('access_token', token, { httpOnly: true });
 
             res.status(200).json({
                 message: 'Login successful',
                 user: {
-                    id: user.id,
-                    name: user.name,
-                    email: user.email,
-                    avatar: user.avatar,
+                    id: account.id,
+                    name: account.name,
+                    email: account.email,
+                    avatar: account.avatar,
                 },
                 token
-            });
+            },);
+            console.log(isAdmin)
+            console.log(account.name)
         } catch (error: Error | any) {
             res.status(400).json({
                 message: 'Login failed',

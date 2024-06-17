@@ -9,5 +9,5 @@ export default interface Post  {
     created_at: string;
     updated_at: string; 
     admin_id: number;
-    like_count: number; 
+    like_count?: number; 
 }

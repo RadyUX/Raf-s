@@ -9,6 +9,7 @@ interface IPostRepository {
     findById(id: string): Promise<Post | null>;
     findAll(category: string): Promise<Post[]>
     create(post: Post): Promise<Post>
+    update(id: string, post:Post): Promise<Post | null>
 }
 
 
@@ -90,6 +91,22 @@ class PostRepository implements IPostRepository {
                     id: result.insertId
                 };
                 resolve(newPost);
+            });
+        });
+    }
+
+    async update(id: string, post: Post): Promise<Post | null> {
+        return new Promise((resolve, reject) => {
+            const sql = "UPDATE posts SET `title`=?, `content`=?, `category`=?, `image`=?, `updated_at`=?, `admin_id`=? WHERE `id`=?";
+            const values = [post.title, post.content, post.category, post.image, formatDateToMySQL(new Date(post.updated_at)), post.admin_id, id];
+
+            db.query<ResultSetHeader>(sql, values, (err, result) => {
+                if (err) {
+                    return reject(err);
+                }
+
+                
+                resolve({ ...post,created_at: post.created_at, id: Number(id) });
             });
         });
     }

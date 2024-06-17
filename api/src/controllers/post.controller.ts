@@ -11,6 +11,7 @@ class PostController{
     this.findById = this.findById.bind(this)
     this.findAll = this.findAll.bind(this)
     this.create = this.create.bind(this)
+    this.update = this.update.bind(this)
     }
 
 
@@ -55,6 +56,31 @@ class PostController{
             };
             const newPost = await this.PostRepository.create(post)
             res.status(201).json(newPost);
+        }catch (error: any) {
+            res.status(500).json({ message: error.message });
+        }
+    }
+
+    update = async (req: Request, res: Response): Promise<void> =>{
+        try{
+            const id = req.params.id
+            const post: Post = {
+                title: req.body.title,
+                content: req.body.content,
+                category: req.body.category,
+                image: req.body.image,
+                created_at: new Date().toISOString(),
+                updated_at: new Date().toISOString(), // Ajoutez updated_at si nécessaire
+                admin_id: req.body.admin_id, // Assurez-vous que admin_id est fourni
+              
+            };
+
+            const updatedPost = await this.PostRepository.update(id, post)
+            if (updatedPost) {
+                res.status(200).json(updatedPost);
+            } else {
+                res.status(404).json({ message: "Post not found" });
+            }
         }catch (error: any) {
             res.status(500).json({ message: error.message });
         }

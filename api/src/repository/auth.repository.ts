@@ -1,22 +1,25 @@
 //auth.repository.ts
 
 
+import { resolve } from "path";
 import db from "../db";
 import Admin from "../models/admin.model";
 import User from "../models/user.model";
 import bcrypt from "bcrypt"
 import { RowDataPacket } from "mysql2";
+import { rejects } from "assert";
 
 
 interface IAuthRepository{
-    login(email: string, password: string): Promise<Admin | User >;
+    login(email: string, password: string):Promise<{ account: User | Admin, isAdmin: boolean }>;
+ 
 }
 
 
 
 class AuthRepository implements IAuthRepository {
     
-    async login(email: string, password: string): Promise<User | Admin> {
+    async login(email: string, password: string): Promise<{ account: User | Admin, isAdmin: boolean }>{
         return new Promise((resolve, reject) => {
             const userQuery = "SELECT * FROM users WHERE email = ?";
             const adminQuery = "SELECT * FROM admin WHERE email = ?";
@@ -38,6 +41,12 @@ class AuthRepository implements IAuthRepository {
             ])
             .then(async ([userResult, adminResult]) => {
                 let accountData = userResult[0] || adminResult[0];
+                let isAdmin = false;
+
+                if (adminResult.length > 0) {
+                    accountData = adminResult[0];
+                    isAdmin = true;
+                }
                 if (accountData) {
                     const passwordIsValid = await bcrypt.compare(password, accountData.password);
 
@@ -52,7 +61,7 @@ class AuthRepository implements IAuthRepository {
                         };
 
                         
-                        resolve(account);
+                        resolve({ account, isAdmin });
                     } else {
                         reject(new Error("Password is incorrect"));
                      
@@ -66,6 +75,8 @@ class AuthRepository implements IAuthRepository {
             });
         });
     }
+
+    
 
 }
 export default AuthRepository
