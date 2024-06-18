@@ -1,5 +1,6 @@
 import React from 'react'
 import Category from '../components/Category';
+import { Link } from 'react-router-dom';
 const posts = [
   {
     id: 1,
@@ -28,13 +29,17 @@ const posts = [
 function Home() {
   return (
     <>
-    
-      <div className='container flex mx-[400px]'>
+   
+      <div className=' flex mx-[400px] justify-around '>
         
         <div>
+        <h1 className='text-[#6CCFF6] text-3xl'>Dernier postes</h1>
           {posts.map((post) => (
-            <div key={post.id} className="post">
+            <div key={post.id} className="post p-7">
+             
+              <Link className="link" to={`/post/${post.id}`}>
               <h2 className="text-2xl font-bold">{post.title}</h2>
+              </Link>
               <p>{post.content}</p>
               <span className="badge">{post.category}</span> | 
               <span className="likes">Likes: {post.likeCount}</span>

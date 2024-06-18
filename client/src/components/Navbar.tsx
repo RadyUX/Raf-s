@@ -18,10 +18,10 @@ const Navbar = () => {
       console.log(currentUser);
   return (
     
-    <div className="navbar w-[100vw] bg-slate-500">
+    <div className="">
          <h1>{currentUser?.user?.name}</h1>
-      <div className="container flex justify-around ">
-        <div className="logo">
+      <div className="flex  items-center justify-around h-[100px] ">
+        <div className="logo ">
           <Link to="/">
        <p>logo</p>
           </Link>

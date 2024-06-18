@@ -8,6 +8,8 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
 import "./index.css"
+import Write from "./pages/Write";
+import Single from "./pages/Single";
 const Layout = () => {
   return (
     <>
@@ -27,6 +29,14 @@ const router = createBrowserRouter([
         path: "/",
         element: <Home />,
       },
+      {
+        path: "/write",
+        element: <Write/>,
+      },
+      {
+        path: "/post/:id",
+        element: <Single/>,
+      },
   
     ],
   },
@@ -38,14 +48,15 @@ const router = createBrowserRouter([
     path: "/login",
     element: <Login />,
   },
+  
 ]);
 function App() {
 
   
 
   return (
-    <div className="app">
-      <div className="container">
+    <div className="app w-full  ">
+      <div className="w-full  ">
         <RouterProvider router={router} />
       </div>
     </div>
