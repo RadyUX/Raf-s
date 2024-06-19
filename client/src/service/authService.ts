@@ -1,7 +1,15 @@
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
+import IUser from "../types/User";
 
-
-
+interface DecodedToken {
+  exp: number;
+  iat: number;
+  isAdmin: boolean;
+  // Ajoutez d'autres champs du token que vous utilisez
+  // Par exemple, isAdmin s'il est présent dans votre token
+}
+ 
 class AuthService {
     login(email: string, password: string) {
       return axios
@@ -32,13 +40,20 @@ class AuthService {
          return axios.post("http://localhost:8000/logout")
     }
 
-    getCurrentUser(){
-        const user = localStorage.getItem("user")
-        if (user) return JSON.parse(user)
+    getCurrentUser(): { decodedToken: DecodedToken; user: IUser} | null {
+      const userString = localStorage.getItem("user");
+      if (userString) {
+        const user = JSON.parse(userString);
+        const token = user.token;
+        const decodedToken = jwtDecode<DecodedToken>(token);
+  
+        return { decodedToken, user };
+      }
+      return null;
     }
   
   
 
-  }
+  } 
   
   export default new AuthService();

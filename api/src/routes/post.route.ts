@@ -11,5 +11,5 @@ postrouter.get('/posts',adminAuth, postController.findAll)
 postrouter.post('/posts/create',adminAuth, postController.create)
 postrouter.put('/posts/update/:id',adminAuth, postController.update)
 postrouter.delete('/posts/delete/:id', adminAuth, postController.delete)
-postrouter.post('/like', auth, postController.toggleLike)
+postrouter.post('/like/:id', auth, postController.toggleLike)
 export default  postrouter ;

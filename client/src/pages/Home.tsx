@@ -25,33 +25,35 @@ const posts = [
   },
 ];
 
-
 function Home() {
   return (
     <>
-   
-      <div className=' flex mx-[400px] justify-around '>
-        
-        <div>
-        <h1 className='text-[#6CCFF6] text-3xl'>Dernier postes</h1>
-          {posts.map((post) => (
-            <div key={post.id} className="post p-7">
-             
-              <Link className="link" to={`/post/${post.id}`}>
-              <h2 className="text-2xl font-bold">{post.title}</h2>
-              </Link>
-              <p>{post.content}</p>
-              <span className="badge">{post.category}</span> | 
-              <span className="likes">Likes: {post.likeCount}</span>
-            </div>
-          ))}
+      <div className='flex justify-around mx-4'>
+        <div className='w-3/4'>
+          <h1 className='text-[#6CCFF6] text-3xl'>Derniers posts</h1>
+          <div className="grid grid-cols-1 gap-8 lg:grid-cols-1">
+            {posts.map((post) => (
+              <div className="p-4 rounded-lg post" key={post.id}>
+                <div className="content">
+                  <Link className="link" to={`/post/${post.id}`}>
+                    <h1 className="text-xl font-bold">{post.title}</h1>
+                  </Link>
+                  <p>Likes: {post.likeCount}</p>
+                  <button className="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">
+                    Read More
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
-        <div>
-          <Category />
+        <div className='w-1/4'>
+        <Category />
         </div>
       </div>
     </>
   )
 }
+
 
 export default Home

@@ -10,6 +10,8 @@ import Home from "./pages/Home";
 import "./index.css"
 import Write from "./pages/Write";
 import Single from "./pages/Single";
+import authService from "./service/authService";
+import { useEffect } from "react";
 const Layout = () => {
   return (
     <>
@@ -53,10 +55,28 @@ const router = createBrowserRouter([
 function App() {
 
   
+  /*useEffect(() => {
+    testGetCurrentUser();
+  }, []);
 
+  function testGetCurrentUser() {
+    const currentUser = authService.getCurrentUser();
+    if (currentUser) {
+      console.log("Utilisateur :", currentUser.user);
+      console.log("isAdmin:", currentUser.decodedToken.isAdmin);
+      
+      if (currentUser.decodedToken.isAdmin !== undefined) {
+        console.log("Statut isAdmin :", currentUser.decodedToken.isAdmin ? "Administrateur" : "Non administrateur");
+      } else {
+        console.log("Statut isAdmin non défini dans le token.");
+      }
+    } else {
+      console.log("Aucun utilisateur n'est actuellement connecté.");
+    }
+  }*/
   return (
-    <div className="app w-full  ">
-      <div className="w-full  ">
+    <div className="w-full app ">
+      <div className="w-full ">
         <RouterProvider router={router} />
       </div>
     </div>

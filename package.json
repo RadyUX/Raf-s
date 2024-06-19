@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/RadyUX/Raf-s/issues"
   },
-  "homepage": "https://github.com/RadyUX/Raf-s#readme"
+  "homepage": "https://github.com/RadyUX/Raf-s#readme",
+  "dependencies": {
+    "jwt-decode": "^4.0.0"
+  }
 }

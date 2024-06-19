@@ -28,6 +28,7 @@ class PostRepository implements IPostRepository {
        
 
     async toggleLike(postId: string, userId: string, like: boolean): Promise<boolean> {
+        console.log(postId, userId,like)
         return new Promise((resolve, reject) => {
             // Vérifier si l'utilisateur a déjà aimé le post
             const checkLikeSql = "SELECT * FROM post_likes WHERE post_id = ? AND user_id = ?";

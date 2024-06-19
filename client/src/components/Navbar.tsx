@@ -2,36 +2,42 @@
 import { Link } from "react-router-dom";
 import { AuthContext } from "../context/auth";
 import { useContext } from "react";
-
+import authService from "../service/authService";
 const Navbar = () => {
     
     const authContext = useContext(AuthContext);
-
-    const { currentUser, logout} = authContext;
-
-
+   
+    const {  logout } = authContext;
+    const currentUser = authService.getCurrentUser();
+    
     const handleLogout = () => {
         logout();
-         // Il sera null après la déconnexion
+   
       };
 
       console.log(currentUser);
   return (
     
-    <div className="">
-         <h1>{currentUser?.user?.name}</h1>
-      <div className="flex  items-center justify-around h-[100px] ">
-        <div className="logo ">
+    <div className="navbar">
+      
+      <div className="container">
+        <div className="logo">
           <Link to="/">
        <p>logo</p>
           </Link>
         </div>
-        <div className="links flex gap-5">
-          <Link className="link" to="/about">
-            <h6>A propos</h6>
+        <div className="links">
+          <Link className="link" to="/?cat=framework">
+            <h6>Framework</h6>
           </Link>
-        
-          <span>{currentUser?.user?.name}</span>
+          <Link className="link" to="/?cat=developpement">
+            <h6>Développement</h6>
+          </Link>
+          <Link className="link" to="/?cat=technology">
+            <h6>Technologie</h6>
+          </Link>
+          
+          <span>{currentUser?.user.user.name}</span>
           {currentUser ? (
             <span onClick={handleLogout}>Logout</span>
           ) : (
@@ -39,11 +45,13 @@ const Navbar = () => {
               Login
             </Link>
           )}
-          <span className="write">
-            <Link className="link" to="/write">
-              Ecrire
-            </Link>
-          </span>
+       { currentUser?.decodedToken.isAdmin && currentUser?.decodedToken && (
+            <span className="write">
+              <Link className="link" to="/write">
+                Write
+              </Link>
+            </span>
+          )}
         </div>
       </div>
     </div>
