@@ -2,6 +2,10 @@
 import PostRepository from "../repository/post.repository"
 import { Request, Response } from 'express';
 import Post from "../models/post.model";
+import { AdminRequest } from "../middlewares/auth.middleware";
+import { AuthRequest } from "../middlewares/userAuth.middleware";
+import Admin from "../models/admin.model";
+import User from "../models/user.model";
 class PostController{
     private PostRepository:  PostRepository
 
@@ -12,6 +16,8 @@ class PostController{
     this.findAll = this.findAll.bind(this)
     this.create = this.create.bind(this)
     this.update = this.update.bind(this)
+    this.delete = this.update.bind(this)
+    this.toggleLike = this.toggleLike.bind(this)
     }
 
 
@@ -85,6 +91,50 @@ class PostController{
             res.status(500).json({ message: error.message });
         }
     }
+
+    delete = async (req: AdminRequest , res: Response): Promise<void> => {
+        try {
+            const id = req.params.id;
+            const adminId = req.admin as Admin  // Utilisez l'ID de l'administrateur authentifié
+
+            const success = await this.PostRepository.delete(id, adminId);
+            if (success) {
+                res.status(200).json({ message: 'Post deleted successfully' });
+            } else {
+                res.status(404).json({ message: 'Post not found or not authorized' });
+            }
+        } catch (error: Error | any) {
+            res.status(500).json({ message: error.message });
+            console.error("Erreur lors de la suppression du post:", error);
+        }
+    };
+
+    toggleLike = async (req: AuthRequest, res: Response): Promise<void> => {
+        const postId = req.body.postId;
+        const userId = req.user?.id?.toString();
+        const like = req.body.like;
+        console.log(like)
+        try {
+            if (typeof userId === 'string') {
+                // Utilisation sécurisée de userId comme string
+                const success = await this.PostRepository.toggleLike(postId, userId, like);
+
+                if (success) {
+                    res.status(200).json({ message: 'Toggle like/unlike successful' });
+                } else {
+                    res.status(400).json({ message: 'Toggle like/unlike failed' });
+                    console.log(like)
+                }
+            } else {
+                // Gérer le cas où userId est undefined (par exemple, envoyer une réponse d'erreur)
+                res.status(400).json({ message: 'User ID not found or invalid' });
+            }
+        } catch (error: any) {
+            res.status(500).json({ message: error.message });
+        }
+    };
 }
+
+
 
 export default PostController;

@@ -4,12 +4,16 @@ import db from "../db";
 import { resolve } from "path";
 import { ResultSetHeader, RowDataPacket } from "mysql2";
 import { rejects } from "assert";
+import Admin from "../models/admin.model";
+import User from "../models/user.model";
 
 interface IPostRepository {
     findById(id: string): Promise<Post | null>;
     findAll(category: string): Promise<Post[]>
     create(post: Post): Promise<Post>
     update(id: string, post:Post): Promise<Post | null>
+    delete(id: string, adminId: Admin): Promise<boolean> 
+    toggleLike(postId: string, userId: string,like: boolean): Promise<boolean> 
 }
 
 
@@ -19,6 +23,50 @@ function formatDateToMySQL(date: Date): string {
 }
 
 class PostRepository implements IPostRepository {
+
+
+       
+
+    async toggleLike(postId: string, userId: string, like: boolean): Promise<boolean> {
+        return new Promise((resolve, reject) => {
+            // Vérifier si l'utilisateur a déjà aimé le post
+            const checkLikeSql = "SELECT * FROM post_likes WHERE post_id = ? AND user_id = ?";
+            db.query<RowDataPacket[]>(checkLikeSql, [postId, userId], (err, data: RowDataPacket[]) => {
+                if (err) {
+                    return reject(err);
+                }
+    
+                if (data && data.length !== undefined && data.length === 0 && like) {
+                    // Liker le post s'il n'est pas déjà liké
+                    const incrementLikeSql = "UPDATE posts SET like_count = like_count + 1 WHERE id = ?";
+                    db.query<ResultSetHeader>(incrementLikeSql, [postId]);
+    
+                    const insertLikeSql = "INSERT INTO post_likes (post_id, user_id) VALUES (?, ?)";
+                    db.query<ResultSetHeader>(insertLikeSql, [postId, userId], (err) => {
+                        if (err) {
+                            return reject(err);
+                        }
+                        resolve(true); // Succès : post liké
+                    });
+                } else if (data && data.length !== undefined && data.length > 0 && !like) {
+                    // Unliker le post s'il est déjà liké
+                    const decrementLikeSql = "UPDATE posts SET like_count = like_count - 1 WHERE id = ?";
+                    db.query<ResultSetHeader>(decrementLikeSql, [postId]);
+    
+                    const deleteLikeSql = "DELETE FROM post_likes WHERE post_id = ? AND user_id = ?";
+                    db.query<ResultSetHeader>(deleteLikeSql, [postId, userId], (err) => {
+                        if (err) {
+                            return reject(err);
+                        }
+                        resolve(true); // Succès : post unliké
+                    });
+                } else {
+                    resolve(false); // Aucune opération nécessaire
+                }
+            });
+        });
+    }
+
 
     async findById(id: string): Promise<Post | null> {
         return new Promise((resolve, reject) => {
@@ -110,6 +158,25 @@ class PostRepository implements IPostRepository {
             });
         });
     }
+
+    async delete(id: string, adminId: Admin): Promise<boolean> {
+        return new Promise((resolve, reject) => {
+            const sql = "DELETE FROM posts WHERE `id`= ? AND `admin_id` = ?"
+            db.query<ResultSetHeader>(sql, [id, adminId.id], (err, result)=>{
+                if(err){
+                    reject(err)
+                }
+                if (result.affectedRows === 0) {
+             
+                    return resolve(false);
+                }
+                resolve(true)
+            })
+
+        })
+    }
+
+    
 }
 
 
