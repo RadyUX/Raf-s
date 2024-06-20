@@ -1,56 +1,60 @@
 import React from 'react'
 import Category from '../components/Category';
-import { Link } from 'react-router-dom';
-const posts = [
-  {
-    id: 1,
-    title: "How to Start Gardening",
-    content: "Gardening is a rewarding activity that can be started with just a few basic tools...",
-    category: "Hobbies",
-    likeCount: 15
-  },
-  {
-    id: 2,
-    title: "Best Practices for JavaScript",
-    content: "JavaScript is a dynamic programming language used in web development...",
-    category: "Programming",
-    likeCount: 22
-  },
-  {
-    id: 3,
-    title: "Tips for Healthy Eating",
-    content: "Healthy eating is not about strict dietary limitations, staying unrealistically thin...",
-    category: "Health & Wellness",
-    likeCount: 30
-  },
-];
+import { Link, useLocation } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+
 
 function Home() {
+  const [posts, setPosts] = useState([]);
+
+  const category = useLocation().search
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.get(`http://localhost:8000/posts${category}`);
+        setPosts(res.data);
+        console.log(res.data);
+        console.log(category);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchData();
+  }, [category]);
+
   return (
     <>
-      <div className='flex justify-around mx-4'>
-        <div className='w-3/4'>
-          <h1 className='text-[#6CCFF6] text-3xl'>Derniers posts</h1>
-          <div className="grid grid-cols-1 gap-8 lg:grid-cols-1">
-            {posts.map((post) => (
-              <div className="p-4 rounded-lg post" key={post.id}>
-                <div className="content">
-                  <Link className="link" to={`/post/${post.id}`}>
-                    <h1 className="text-xl font-bold">{post.title}</h1>
-                  </Link>
-                  <p>Likes: {post.likeCount}</p>
-                  <button className="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">
-                    Read More
-                  </button>
-                </div>
-              </div>
-            ))}
+<div className="container h-screen px-4 mx-auto my-8">
+  <div className="flex flex-wrap -mx-4">
+    <div className="w-full px-4 mb-8 lg:w-3/4 lg:mb-0">
+      <h1 className="text-3xl text-[#6CCFF6] font-bold mb-6">Derniers posts</h1>
+      <div className="grid grid-cols-1 gap-8">
+        {posts.map((post) => (
+          <div className="p-6 rounded-lg shadow-lg" key={post.id}>
+            <div className="content">
+             
+                <h1 className="mb-2 text-2xl font-semibold">{post.title}</h1>
+            
+              <p className="mb-4 text-gray-600">Likes: {post.likeCount}</p>
+              <Link className="link" to={`/post/${post.id}`}>
+              <button className="px-4 py-2 font-bold text-white transition duration-300 ease-in-out bg-blue-500 rounded hover:bg-blue-700">
+                Read More
+              </button>
+              </Link>
+            </div>
           </div>
-        </div>
-        <div className='w-1/4'>
-        <Category />
-        </div>
+        ))}
       </div>
+    </div>
+    <div className="w-full px-4 lg:w-1/4">
+      <Category />
+    </div>
+  </div>
+</div>
+
     </>
   )
 }

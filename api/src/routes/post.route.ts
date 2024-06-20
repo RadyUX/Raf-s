@@ -7,7 +7,7 @@ const postrouter = Router();
 const postController = new PostController()
 
 postrouter.get('/post/:id', postController.findById);
-postrouter.get('/posts',adminAuth, postController.findAll)
+postrouter.get('/posts', postController.findAll)
 postrouter.post('/posts/create',adminAuth, postController.create)
 postrouter.put('/posts/update/:id',adminAuth, postController.update)
 postrouter.delete('/posts/delete/:id', adminAuth, postController.delete)

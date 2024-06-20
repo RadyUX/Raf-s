@@ -1,29 +1,6 @@
 import React from 'react'
 import DOMPurify from 'dompurify';
 
-const posts = [
-  {
-    id: 1,
-    title: "How to Start Gardening",
-    content: "Gardening is a rewarding activity that can be started with just a few basic tools...",
-    category: "Hobbies",
-    likeCount: 15
-  },
-  {
-    id: 2,
-    title: "Best Practices for JavaScript",
-    content: "JavaScript is a dynamic programming language used in web development...",
-    category: "Programming",
-    likeCount: 22
-  },
-  {
-    id: 3,
-    title: "Tips for Healthy Eating",
-    content: "Healthy eating is not about strict dietary limitations, staying unrealistically thin...",
-    category: "Health & Wellness",
-    likeCount: 30
-  },
-];
 
 
 function Single() {

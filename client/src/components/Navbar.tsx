@@ -18,43 +18,40 @@ const Navbar = () => {
       console.log(currentUser);
   return (
     
-    <div className="navbar">
-      
-      <div className="container">
-        <div className="logo">
-          <Link to="/">
-       <p>logo</p>
+    <div className="py-4 text-white bg-gray-800 navbar">
+    <div className="container flex items-center justify-between mx-auto">
+      <div className="logo">
+        <Link to="/" className="text-xl font-bold">
+          <p>logo</p>
+        </Link>
+      </div>
+      <div className="flex space-x-6 links">
+        <Link className="text-white link hover:text-gray-400" to="/?cat=framework">
+          <h6 className="text-lg">Portfolio</h6>
+        </Link>
+        <Link className="text-white link hover:text-gray-400" to="/?cat=developpement">
+          <h6 className="text-lg">Posts</h6>
+        </Link>
+       
+        <span className="text-lg text-2xl text-[#6CCFF6]">{currentUser?.user.user.name}</span>
+        {currentUser ? (
+          <span onClick={handleLogout} className="text-lg text-[#FB6376] cursor-pointer hover:text-red-700 ">Logout</span>
+        ) : (
+          <Link className="text-lg text-[#6CCFF6] link hover:text-gray-400" to="/login">
+            Login
           </Link>
-        </div>
-        <div className="links">
-          <Link className="link" to="/?cat=framework">
-            <h6>Framework</h6>
-          </Link>
-          <Link className="link" to="/?cat=developpement">
-            <h6>Développement</h6>
-          </Link>
-          <Link className="link" to="/?cat=technology">
-            <h6>Technologie</h6>
-          </Link>
-          
-          <span>{currentUser?.user.user.name}</span>
-          {currentUser ? (
-            <span onClick={handleLogout}>Logout</span>
-          ) : (
-            <Link className="link" to="/login">
-              Login
+        )}
+        {currentUser?.decodedToken.isAdmin && currentUser?.decodedToken && (
+          <span className="write">
+            <Link className="text-lg text-white link hover:text-gray-400" to="/write">
+              Write
             </Link>
-          )}
-       { currentUser?.decodedToken.isAdmin && currentUser?.decodedToken && (
-            <span className="write">
-              <Link className="link" to="/write">
-                Write
-              </Link>
-            </span>
-          )}
-        </div>
+          </span>
+        )}
       </div>
     </div>
+  </div>
+  
   );
 };
 
