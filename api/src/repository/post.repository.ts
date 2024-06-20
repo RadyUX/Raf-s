@@ -84,6 +84,7 @@ class PostRepository implements IPostRepository {
                         title: data[0].title ,
                         content: data[0].content ,
                         category: data[0].category ,
+                        image: data[0].image ,
                         created_at: data[0].created_at,
                         updated_at: data[0].updated_at,
                         admin_id: data[0].admin_id,

@@ -110,10 +110,11 @@ class PostController{
     };
 
     toggleLike = async (req: AuthRequest, res: Response): Promise<void> => {
-        const postId = req.body.postId;
+        const postId = req.params.id
         const userId = req.user?.id?.toString();
         const like = req.body.like;
         console.log(like)
+        console.log(userId)
         try {
             if (typeof userId === 'string') {
                 // Utilisation sécurisée de userId comme string

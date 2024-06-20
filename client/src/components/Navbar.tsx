@@ -18,7 +18,7 @@ const Navbar = () => {
       console.log(currentUser);
   return (
     
-    <div className="py-4 text-white bg-gray-800 navbar">
+    <div className="py-6 mb-[100px] text-white navbar">
     <div className="container flex items-center justify-between mx-auto">
       <div className="logo">
         <Link to="/" className="text-xl font-bold">
@@ -26,12 +26,10 @@ const Navbar = () => {
         </Link>
       </div>
       <div className="flex space-x-6 links">
-        <Link className="text-white link hover:text-gray-400" to="/?cat=framework">
+        <Link className="text-white link hover:text-gray-400" to="https://rafaelesin.netlify.app/">
           <h6 className="text-lg">Portfolio</h6>
         </Link>
-        <Link className="text-white link hover:text-gray-400" to="/?cat=developpement">
-          <h6 className="text-lg">Posts</h6>
-        </Link>
+        
        
         <span className="text-lg text-2xl text-[#6CCFF6]">{currentUser?.user.user.name}</span>
         {currentUser ? (
