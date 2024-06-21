@@ -12,7 +12,7 @@ interface IPostRepository {
     findAll(category: string): Promise<Post[]>
     create(post: Post): Promise<Post>
     update(id: string, post:Post): Promise<Post | null>
-    delete(id: string, adminId: Admin): Promise<boolean> 
+    delete(id: string): Promise<boolean> 
     toggleLike(postId: string, userId: string,like: boolean): Promise<boolean> 
 }
 
@@ -115,6 +115,7 @@ class PostRepository implements IPostRepository {
                     title: row.title as string,
                     content: row.content as string,
                     category: row.category as string,
+                    image: row.image as string,
                     created_at: row.created_at as string,
                     updated_at: row.updated_at as string,
                     admin_id: row.admin_id as number,
@@ -161,23 +162,30 @@ class PostRepository implements IPostRepository {
         });
     }
 
-    async delete(id: string, adminId: Admin): Promise<boolean> {
+    async delete(id: string): Promise<boolean> {
         return new Promise((resolve, reject) => {
-            const sql = "DELETE FROM posts WHERE `id`= ? AND `admin_id` = ?"
-            db.query<ResultSetHeader>(sql, [id, adminId.id], (err, result)=>{
-                if(err){
-                    reject(err)
+            const deleteLikesSQL = "DELETE FROM post_likes WHERE post_id = ?";
+            const deletePostSQL = "DELETE FROM posts WHERE id = ?";
+            
+            db.query<ResultSetHeader>(deleteLikesSQL, [id], (err, result) => {
+                if (err) {
+                    reject(err);
+                    return;
                 }
-                if (result.affectedRows === 0) {
-             
-                    return resolve(false);
-                }
-                resolve(true)
-            })
-
-        })
+                db.query<ResultSetHeader>(deletePostSQL, [id], (err, result) => {
+                    if (err) {
+                        reject(err);
+                        return;
+                    }
+                    if (result.affectedRows === 0) {
+                        resolve(false);
+                    } else {
+                        resolve(true);
+                    }
+                });
+            });
+        });
     }
-
     
 }
 

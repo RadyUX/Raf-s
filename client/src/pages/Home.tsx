@@ -38,7 +38,7 @@ function Home() {
              
                 <h1 className="mb-2 text-2xl font-semibold">{post.title}</h1>
             
-              <p className="mb-4 text-gray-600">Likes: {post.likeCount}</p>
+              <p className="mb-4 text-gray-600">Likes: {post.like_count}</p>
               <Link className="link" to={`/post/${post.id}`}>
               <button className="px-4 py-2 font-bold text-white transition duration-300 ease-in-out bg-blue-500 rounded hover:bg-blue-700">
                 Read More

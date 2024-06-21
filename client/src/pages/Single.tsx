@@ -64,13 +64,13 @@ function Single() {
     
     }
   };
-  console.log(currentUser)
+  console.log(post.image)
   return (
     <div className="flex justify-center h-screen max-w-5xl p-8 mx-auto single">
     <div className="w-full p-8 rounded-lg shadow-lg content lg:w-3/4">
       <img 
-        src={post.image} 
-        alt={post.title} 
+        src={`../../public/upload/${post?.image}`}
+        alt={post?.title} 
         className="object-cover w-full h-64 mb-6 rounded-lg"
       />
       <div className="flex items-center mb-6 user">

@@ -16,7 +16,7 @@ class PostController{
     this.findAll = this.findAll.bind(this)
     this.create = this.create.bind(this)
     this.update = this.update.bind(this)
-    this.delete = this.update.bind(this)
+    this.delete = this.delete.bind(this)
     this.toggleLike = this.toggleLike.bind(this)
     }
 
@@ -92,34 +92,40 @@ class PostController{
         }
     }
 
-    delete = async (req: AdminRequest , res: Response): Promise<void> => {
-        try {
-            const id = req.params.id;
-            const adminId = req.admin as Admin  // Utilisez l'ID de l'administrateur authentifié
-
-            const success = await this.PostRepository.delete(id, adminId);
-            if (success) {
-                res.status(200).json({ message: 'Post deleted successfully' });
-            } else {
-                res.status(404).json({ message: 'Post not found or not authorized' });
-            }
+    delete = async (req: Request, res: Response): Promise<void> => {
+       
+             
+            
+            try {  
+                
+        
+                const id = req.params.id;   
+                const success = await this.PostRepository.delete(id);
+                if (success) {
+                    res.status(200).json({ message: 'Post deleted successfully' });
+                } else {
+                    res.status(404).json({ message: 'Post not found or not authorized' });
+                }
         } catch (error: Error | any) {
             res.status(500).json({ message: error.message });
+            
+            
             console.error("Erreur lors de la suppression du post:", error);
-        }
+        
+    }
     };
 
     toggleLike = async (req: AuthRequest, res: Response): Promise<void> => {
         const postId = req.params.id
         const userId = req.user?.id?.toString();
         const like = req.body.like;
-        console.log(like)
-        console.log(userId)
+       
         try {
             if (typeof userId === 'string') {
                 // Utilisation sécurisée de userId comme string
                 const success = await this.PostRepository.toggleLike(postId, userId, like);
-
+                console.log(like)
+                console.log(userId)
                 if (success) {
                     res.status(200).json({ message: 'Toggle like/unlike successful' });
                 } else {

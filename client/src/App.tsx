@@ -17,7 +17,7 @@ const Layout = () => {
     <>
       <Navbar />
       <Outlet />
-      <Footer />
+    
     </>
   );
 };
@@ -55,7 +55,7 @@ const router = createBrowserRouter([
 function App() {
 
   
-  /*useEffect(() => {
+  useEffect(() => {
     testGetCurrentUser();
   }, []);
 
@@ -73,7 +73,7 @@ function App() {
     } else {
       console.log("Aucun utilisateur n'est actuellement connecté.");
     }
-  }*/
+  }
   return (
     <div className="w-full app ">
       <div className="w-full ">
