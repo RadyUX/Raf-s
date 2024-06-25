@@ -8,7 +8,8 @@ import moment from "moment";
 import authService from '../service/authService';
  
 function Write() {
-    const state = useLocation().state;
+    const state = useLocation().state.post;
+    console.log("State data:", state); 
     const [value, setValue] = useState(state?.content || "");
     const [title, setTitle] = useState(state?.title || "");
     const [file, setFile] = useState<File | null>(null);

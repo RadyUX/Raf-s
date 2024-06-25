@@ -31,7 +31,30 @@ function Single() {
   }, [postId]);
 
   const [isLiked, setIsLiked] = useState();
-  
+   const handleDelete = async () => {
+    const token = currentUser?.user.token; 
+    const response = await axios.delete(`http://localhost:8000/posts/delete/${postId}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    
+   })
+
+   navigate('/')
+
+  }
+ 
+  const handleUpdate = async (post: Post) => {
+    try{
+      
+      
+      navigate('/write', { state: { post } });
+    }catch(err){
+      const token = currentUser?.user.token; 
+      console.log(token)
+    }
+   
+  }
  
   const handleLike = async () => {
     const token = currentUser?.user.token; // Ensure you have the correct path to the token
@@ -87,6 +110,21 @@ function Single() {
         >
           Like
         </button>
+      )}
+       {currentUser?.decodedToken.isAdmin && (
+        <div>
+        <button
+          onClick={handleDelete}
+          className="px-4 py-2 font-bold text-white transition duration-300 ease-in-out bg-blue-500 rounded-lg hover:bg-blue-700"
+        >
+         DELETE
+        </button>  <button
+        onClick={() => handleUpdate(post)}
+          className="px-4 py-2 font-bold text-white transition duration-300 ease-in-out bg-blue-500 rounded-lg hover:bg-blue-700"
+        >
+         Update
+        </button>
+        </div>
       )}
       
   
