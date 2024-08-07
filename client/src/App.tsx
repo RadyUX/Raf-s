@@ -5,7 +5,7 @@ import { createBrowserRouter, RouterProvider
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
+
 import Home from "./pages/Home";
 import "./index.css"
 import Write from "./pages/Write";
