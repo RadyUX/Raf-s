@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rimraf dist && tsc",
+    "build": "rimraf dist && tsc  --output dist",
     "dev": "npx nodemon",
     "start": "npm run build && node build/index.js",
     "seed": "ts-node src/seed.ts"
