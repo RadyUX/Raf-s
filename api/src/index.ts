@@ -4,6 +4,7 @@ import db from "./db"
 import UserRepository from "./repository/user.repository";
 import User from "./models/user.model";
 import UserController from "./controllers/user.controller";
+import dotenv from 'dotenv/config'
 import authrouter from "./routes/auth.route";
 import userrouter from "./routes/user.route";
 import postrouter from "./routes/post.route";
@@ -12,14 +13,20 @@ import multer from "multer";
 import path from "path";
 import fs from "fs"
 const app: Express = express()
-const PORT = 8000;
+const PORT = process.env.PORT || 8080
 
 app.use(express.json());
 
   app.listen(PORT, () => {
     console.log(`Connected at http://localhost:${PORT}`);
+    
     db
 });
+
+app.get('/', (_req, res) => {
+  return res.send('Express Typescript on Vercel')
+})
+
 
 const userController = new UserController()
 const userRepo = new UserRepository(); 
