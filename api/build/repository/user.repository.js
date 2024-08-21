@@ -1,4 +1,15 @@
 "use strict";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -8,64 +19,108 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const db_1 = __importDefault(require("../db"));
-const bcrypt_1 = __importDefault(require("bcrypt"));
-class UserRepository {
-    create(user) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
-                try {
-                    // Hachage du mot de passe
-                    const hashedPassword = yield bcrypt_1.default.hash(user.password, 5);
-                    const sql = 'INSERT INTO users (id, name, email, password, avatar) VALUES (?, ?, ?, ?, ?)';
-                    db_1.default.query(sql, [user.id, user.name, user.email, hashedPassword, user.avatar], (err, res) => {
-                        if (err) {
-                            reject(err);
-                        }
-                        else {
-                            console.log('User created with ID:', user.id);
-                            resolve(Object.assign(Object.assign({}, user), { id: user.id, password: hashedPassword // Retourne le mot de passe haché
-                             }));
-                        }
-                    });
-                }
-                catch (error) {
-                    reject(error);
-                }
-            }));
-        });
+var db_1 = __importDefault(require("../db"));
+var bcrypt_1 = __importDefault(require("bcrypt"));
+var UserRepository = /** @class */ (function () {
+    function UserRepository() {
     }
-    userByEmail(userEmail) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return new Promise((resolve, reject) => {
-                const sql = 'SELECT * FROM users WHERE email = ?';
-                db_1.default.query(sql, [userEmail], (err, res) => {
-                    if (err) {
-                        reject(err);
-                        console.log(err);
-                    }
-                    else {
-                        if (res.length > 0) {
-                            const user = {
-                                id: res[0].id,
-                                name: res[0].name,
-                                email: res[0].email,
-                                password: res[0].password,
-                                avatar: res[0].avatar,
-                            };
-                            resolve(user);
-                        }
-                        else {
-                            resolve(undefined);
-                        }
-                    }
-                });
+    UserRepository.prototype.create = function (user) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _this = this;
+            return __generator(this, function (_a) {
+                return [2 /*return*/, new Promise(function (resolve, reject) { return __awaiter(_this, void 0, void 0, function () {
+                        var hashedPassword_1, sql, error_1;
+                        return __generator(this, function (_a) {
+                            switch (_a.label) {
+                                case 0:
+                                    _a.trys.push([0, 2, , 3]);
+                                    return [4 /*yield*/, bcrypt_1.default.hash(user.password, 5)];
+                                case 1:
+                                    hashedPassword_1 = _a.sent();
+                                    sql = 'INSERT INTO users (id, name, email, password, avatar) VALUES (?, ?, ?, ?, ?)';
+                                    db_1.default.query(sql, [user.id, user.name, user.email, hashedPassword_1, user.avatar], function (err, res) {
+                                        if (err) {
+                                            reject(err);
+                                        }
+                                        else {
+                                            console.log('User created with ID:', user.id);
+                                            resolve(__assign(__assign({}, user), { id: user.id, password: hashedPassword_1 // Retourne le mot de passe haché
+                                             }));
+                                        }
+                                    });
+                                    return [3 /*break*/, 3];
+                                case 2:
+                                    error_1 = _a.sent();
+                                    reject(error_1);
+                                    return [3 /*break*/, 3];
+                                case 3: return [2 /*return*/];
+                            }
+                        });
+                    }); })];
             });
         });
-    }
-}
+    };
+    UserRepository.prototype.userByEmail = function (userEmail) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/, new Promise(function (resolve, reject) {
+                        var sql = 'SELECT * FROM users WHERE email = ?';
+                        db_1.default.query(sql, [userEmail], function (err, res) {
+                            if (err) {
+                                reject(err);
+                                console.log(err);
+                            }
+                            else {
+                                if (res.length > 0) {
+                                    var user = {
+                                        id: res[0].id,
+                                        name: res[0].name,
+                                        email: res[0].email,
+                                        password: res[0].password,
+                                        avatar: res[0].avatar,
+                                    };
+                                    resolve(user);
+                                }
+                                else {
+                                    resolve(undefined);
+                                }
+                            }
+                        });
+                    })];
+            });
+        });
+    };
+    return UserRepository;
+}());
 exports.default = UserRepository;

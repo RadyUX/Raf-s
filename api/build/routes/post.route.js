@@ -3,12 +3,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = require("express");
-const post_controller_1 = __importDefault(require("../controllers/post.controller"));
-const auth_middleware_1 = require("../middlewares/auth.middleware");
-const userAuth_middleware_1 = require("../middlewares/userAuth.middleware");
-const postrouter = (0, express_1.Router)();
-const postController = new post_controller_1.default();
+var express_1 = require("express");
+var post_controller_1 = __importDefault(require("../controllers/post.controller"));
+var auth_middleware_1 = require("../middlewares/auth.middleware");
+var userAuth_middleware_1 = require("../middlewares/userAuth.middleware");
+var postrouter = (0, express_1.Router)();
+var postController = new post_controller_1.default();
 postrouter.get('/post/:id', postController.findById);
 postrouter.get('/posts', postController.findAll);
 postrouter.post('/posts/create', auth_middleware_1.adminAuth, postController.create);

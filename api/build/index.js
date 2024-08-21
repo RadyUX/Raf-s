@@ -3,33 +3,33 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = __importDefault(require("express"));
-const db_1 = __importDefault(require("./db"));
-const user_repository_1 = __importDefault(require("./repository/user.repository"));
-const user_controller_1 = __importDefault(require("./controllers/user.controller"));
-const auth_route_1 = __importDefault(require("./routes/auth.route"));
-const user_route_1 = __importDefault(require("./routes/user.route"));
-const post_route_1 = __importDefault(require("./routes/post.route"));
-const cors_1 = __importDefault(require("cors"));
-const multer_1 = __importDefault(require("multer"));
-const path_1 = __importDefault(require("path"));
-const fs_1 = __importDefault(require("fs"));
-const app = (0, express_1.default)();
-const PORT = 8000;
+var express_1 = __importDefault(require("express"));
+var db_1 = __importDefault(require("./db"));
+var user_repository_1 = __importDefault(require("./repository/user.repository"));
+var user_controller_1 = __importDefault(require("./controllers/user.controller"));
+var auth_route_1 = __importDefault(require("./routes/auth.route"));
+var user_route_1 = __importDefault(require("./routes/user.route"));
+var post_route_1 = __importDefault(require("./routes/post.route"));
+var cors_1 = __importDefault(require("cors"));
+var multer_1 = __importDefault(require("multer"));
+var path_1 = __importDefault(require("path"));
+var fs_1 = __importDefault(require("fs"));
+var app = (0, express_1.default)();
+var PORT = 8000;
 app.use(express_1.default.json());
-app.listen(PORT, () => {
-    console.log(`Connected at http://localhost:${PORT}`);
+app.listen(PORT, function () {
+    console.log("Connected at http://localhost:".concat(PORT));
     db_1.default;
 });
-const userController = new user_controller_1.default();
-const userRepo = new user_repository_1.default();
+var userController = new user_controller_1.default();
+var userRepo = new user_repository_1.default();
 app.use((0, cors_1.default)());
 // Define the storage configuration
-const storage = multer_1.default.diskStorage({
+var storage = multer_1.default.diskStorage({
     destination: function (req, file, cb) {
-        const uploadPath = path_1.default.join(__dirname, '../../client/public/upload');
+        var uploadPath = path_1.default.join(__dirname, '../../client/public/upload');
         // Ensure the upload directory exists (creates if doesn't)
-        fs_1.default.mkdir(uploadPath, { recursive: true }, (err) => {
+        fs_1.default.mkdir(uploadPath, { recursive: true }, function (err) {
             if (err) {
                 return null;
             }
@@ -44,9 +44,9 @@ const storage = multer_1.default.diskStorage({
     }
 });
 // Initialize multer with the storage configuration
-const upload = (0, multer_1.default)({ storage: storage });
-app.post('/api/upload', upload.single('file'), (req, res) => {
-    const file = req.file;
+var upload = (0, multer_1.default)({ storage: storage });
+app.post('/api/upload', upload.single('file'), function (req, res) {
+    var file = req.file;
     res.status(200).json(file === null || file === void 0 ? void 0 : file.filename);
 });
 app.use('/', auth_route_1.default);
