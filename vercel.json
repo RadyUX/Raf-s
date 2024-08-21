@@ -11,6 +11,5 @@
       "src": "/(.*)",
       "dest": "/api/build/index.js"
     }
-  ],
-  "outputDirectory": "build"
+  ]
 }
